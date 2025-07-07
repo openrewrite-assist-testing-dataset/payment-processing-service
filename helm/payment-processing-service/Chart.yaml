@@ -1,0 +1,17 @@
+apiVersion: apps/v1beta2
+name: payment-processing-service
+description: A payment processing service built with Dropwizard
+type: application
+version: 1.0.0
+appVersion: 1.0.0
+
+maintainers:
+  - name: Payment Team
+    email: payments@example.com
+
+keywords:
+  - payments
+  - dropwizard
+  - postgresql
+  - oauth2
+  - api

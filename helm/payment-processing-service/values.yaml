@@ -1,0 +1,92 @@
+replicaCount: 2
+
+image:
+  repository: payment-processing-service
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - host: payments.example.com
+      paths:
+        - path: /api/v1
+          pathType: Prefix
+  tls: []
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+env:
+  - name: JAVA_OPTS
+    value: "-Xmx1024m -Xms512m"
+
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        username: payments
+        password: payments123
+        database: payments
+  primary:
+    persistence:
+      enabled: true
+      size: 8Gi
+
+configMap:
+  config.yml: |
+    database:
+      driverClass: org.postgresql.Driver
+      url: jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/payments
+      user: payments
+      password: payments123
+      maxWaitForConnection: 1s
+      validationQuery: "SELECT 1"
+      minSize: 8
+      maxSize: 32
+    
+    oauth2:
+      jwtSecret: payment-service-secret-key-change-in-production
+      issuer: payment-service
+      expirationTimeInMinutes: 60
+    
+    server:
+      type: simple
+      applicationContextPath: /
+      adminContextPath: /admin
+      connector:
+        type: http
+        port: 8080
+    
+    logging:
+      level: INFO
+      loggers:
+        com.example.payment: DEBUG
+      appenders:
+        - type: console
+          threshold: ALL
+          target: stdout

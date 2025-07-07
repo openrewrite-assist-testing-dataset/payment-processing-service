@@ -1,0 +1,16 @@
+dependencies {
+    implementation project(':common')
+    
+    implementation 'org.jdbi:jdbi3-core:3.27.2'
+    implementation 'org.jdbi:jdbi3-sqlobject:3.27.2'
+    implementation 'org.jdbi:jdbi3-postgres:3.27.2'
+    implementation 'org.postgresql:postgresql:42.3.8'
+    
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.mockito:mockito-core:4.6.1'
+}
+
+test {
+    useJUnitPlatform()
+}

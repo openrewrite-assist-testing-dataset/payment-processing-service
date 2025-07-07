@@ -1,0 +1,32 @@
+database:
+  driverClass: org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/payments
+  user: payments
+  password: payments123
+  maxWaitForConnection: 1s
+  validationQuery: "SELECT 1"
+  minSize: 8
+  maxSize: 32
+  checkConnectionWhileIdle: false
+
+oauth2:
+  jwtSecret: payment-service-secret-key-change-in-production
+  issuer: payment-service
+  expirationTimeInMinutes: 60
+
+server:
+  type: simple
+  applicationContextPath: /
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: 8080
+
+logging:
+  level: INFO
+  loggers:
+    com.example.payment: DEBUG
+  appenders:
+    - type: console
+      threshold: ALL
+      target: stdout

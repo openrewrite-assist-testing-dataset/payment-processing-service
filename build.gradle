@@ -1,0 +1,97 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+group = 'com.example.payment'
+version = '1.0.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':common')
+    implementation project(':service')
+    implementation project(':client')
+    
+    // Dropwizard 2.0.x
+    implementation 'io.dropwizard:dropwizard-core:2.0.34'
+    implementation 'io.dropwizard:dropwizard-db:2.0.34'
+    implementation 'io.dropwizard:dropwizard-jdbi3:2.0.34'
+    implementation 'io.dropwizard:dropwizard-auth:2.0.34'
+    implementation 'io.dropwizard:dropwizard-configuration:2.0.34'
+    
+    // PostgreSQL and Flyway
+    implementation 'org.postgresql:postgresql:42.3.8'
+    implementation 'org.flywaydb:flyway-core:8.5.13'
+    implementation 'io.dropwizard:dropwizard-migrations:2.0.34'
+    
+    // JDBI
+    implementation 'org.jdbi:jdbi3-core:3.27.2'
+    implementation 'org.jdbi:jdbi3-sqlobject:3.27.2'
+    implementation 'org.jdbi:jdbi3-postgres:3.27.2'
+    
+    // OAuth2 (simplified)
+    implementation 'com.auth0:java-jwt:3.18.3'
+    implementation 'org.pac4j:pac4j-oauth:4.5.7'
+    
+    // OpenAPI 3.0 (older version)
+    implementation 'io.swagger.core.v3:swagger-core:2.1.13'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.1.13'
+    implementation 'io.swagger.core.v3:swagger-jaxrs2:2.1.13'
+    
+    // Jackson (older version)
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.7'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
+    
+    // Logback for logging
+    implementation 'ch.qos.logback:logback-classic:1.2.12'
+    implementation 'ch.qos.logback:logback-core:1.2.12'
+    
+    // JUnit 5 for tests
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
+    testImplementation 'io.dropwizard:dropwizard-testing:2.0.34'
+    testImplementation 'org.mockito:mockito-core:4.6.1'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.6.1'
+    testImplementation 'org.testcontainers:postgresql:1.17.6'
+    testImplementation 'org.testcontainers:junit-jupiter:1.17.6'
+}
+
+application {
+    mainClass = 'com.example.payment.PaymentApplication'
+}
+
+shadowJar {
+    archiveBaseName = 'payment-processing-service'
+    archiveVersion = version
+    mainClassName = 'PaymentApplication'
+    mergeServiceFiles()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+allprojects {
+    apply plugin: 'java'
+    
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(11)
+        }
+    }
+    
+    repositories {
+        mavenCentral()
+    }
+}

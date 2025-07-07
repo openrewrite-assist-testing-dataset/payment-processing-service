@@ -1,0 +1,5 @@
+rootProject.name = 'payment-processing-service'
+
+include 'common'
+include 'service'
+include 'client'
